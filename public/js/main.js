@@ -115,7 +115,8 @@ let poele = {
     contenu : [],
     cuir() {
         setTimeout(()=> {
-            this.contenu[0] = "cuit"
+            this.contenu[0].etat = "cuit"
+            console.log(`Le ${poele.contenu[0].nom} est à l'état : ${poele.contenu[0].etat}`);
         }, 4000)
     }
 }
@@ -239,8 +240,19 @@ bol.contenu.forEach(element => {
 
 // Afficher un message avec le nouveau mélange
 
+bol.melanger("omelette");
+console.log(bol.contenu);
+
+console.log(`Le bol contient : ${bol.contenu.nom}`);
+
 // vider le contenu du bol dans la poele. Il ne doit plus rien avoir dans le bol et y avoir juste l'omelette pas cuite.
 
-// Cuire l'omelette avec la méthode de la poele 
+poele.contenu.push(bol.contenu);
+console.log("___MA POELE___");
+console.log(poele);
 
+// Cuire l'omelette avec la méthode de la poele 
 // Afficher un message final, notre omelette est cuite :)
+
+console.log(`Le ${poele.contenu[0].nom} est à l'état : ${poele.contenu[0].etat}`)
+poele.cuir(poele.contenu);
