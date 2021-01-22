@@ -165,10 +165,14 @@ console.log(`${personne.nom} a pris un ${epicerie.paniers.type}`)
 
 // Je créer une boucle qui va prendre chaque élément (ingrédient) du contenu de l'épicerie (1 à 1) et en faire une COPIE dans le panier du personnage
 
-epicerie.ingredients.forEach(element => {
-    personne.mainDroite[0].contenu.push(element);
-    console.log(`${personne.nom} a pris ${element.nom}`);
-});
+for (let i = 0; i < personne.mainDroite[0].contenu.length; i++) {
+    bol.contenu.push(personne.mainDroite[0].contenu[i]);
+    personne.mainDroite[0].contenu.splice(personne.mainDroite[0].contenu[i], 1);
+    i--
+}
+
+console.log("___MON PANIER___");
+console.log(`Le panier contient ${personne.mainDroite[0].contenu.length} élément`);
 
 // Afficher un message à chaque ingrédient pris
 
