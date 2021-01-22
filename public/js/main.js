@@ -11,18 +11,23 @@
 
 let personne = {
     nom : "Dupont",
-    lieu : "Bruxelles",
+    lieu : "maison",
     argent : 100,
     mainDroite : [],
     mainGauche : [],
-    seDeplacer(lieu) {
-
+    seDeplacer(x) {
+        this.lieu = x.nom
+        console.log(personne.nom + " est actuellement à la " + personne.lieu)
     },
-    payerArticle(article) {
-
+    payerArticle(x) {
+        this.argent -= x.prix
+        console.log(`Votre portefeuille contient ${this.argent}`);
     },
     couper(ingredient, outil) {
-
+        if (ingredient.etat == "entier") {
+            ingredient.etat = "coupé"
+            console.log(`Le ${outil.nom} ${outil.action} le ${ingredient.nom}`);
+        }
     },
 }
 
@@ -32,7 +37,7 @@ let personne = {
 
 let maison = {
     nom : "maison",
-    personnes = [],
+    personnes : [],
 }
 
 /**
@@ -43,7 +48,7 @@ let maison = {
 
 let couteau = {
     nom : "couteau",
-    action : "coupé",
+    action : "couper",
 }
 
 /**
@@ -51,28 +56,41 @@ let couteau = {
  * propriétés : nom, etats ( entier,coupé, moulu), prix
 */
 
-let ingredients = {
-    oignon = {
-        nom : "oignon",
-        etat : "coupé",
-        prix : 1,
-    },
-    oeuf = {
-        nom : "oeuf",
-        etat : "entier",
-        prix : 2,
-    },
-    epice = {
-        nom : "epice",
-        etat : "moulu",
-        prix : 3,
-    },
-    fromage = {
-        nom : "fromage",
-        etat : "coupé",
-        prix : 4,
-    },
+// let ingredients = {
+//     oignon = {
+//         nom : "oignon",
+//         etat : "coupé",
+//         prix : 1,
+//     },
+//     oeuf = {
+//         nom : "oeuf",
+//         etat : "entier",
+//         prix : 2,
+//     },
+//     epice = {
+//         nom : "epice",
+//         etat : "moulu",
+//         prix : 3,
+//     },
+//     fromage = {
+//         nom : "fromage",
+//         etat : "coupé",
+//         prix : 4,
+//     },
+// }
+
+class Ingredients {
+    constructor(nom, etat, prix) {
+        this.nom = nom
+        this.etat = etat
+        this.prix = prix
+    }
 }
+
+let oignon = new Ingredients ("oignon", "coupé", 1)
+let oeuf = new Ingredients ("oeuf", "entier", 2)
+let epice = new Ingredients ("epice", "moulu", 3)
+let fromage = new Ingredients ("fromage", "coupé", 4)
 
 
 // Créer un lieu "epicerie" qui a comme propriétés :
@@ -87,7 +105,7 @@ let epicerie = {
         type : "panier",
         contenu : [],
     },
-    ingr : [oignon, oeuf, epice, fromage]
+    ingredients : [oignon, oeuf, epice, fromage],
 }
 
 /* Créer un poele avec un tableau comme contenu. Et avec une méthode cuir() qui, après 4 secondes, met l'état 'cuit' à this.contenu[0]. On peut faire ça avec la fonction setTimeout(()=> {}, 4000)
@@ -108,10 +126,10 @@ let poele = {
 let bol = {
     contenu : [],
     melanger(nomMelange) {
-        newMelange = {
+        let newMelange = {
             nom : nomMelange,
-            etat : "pas cuit"
-        },
+            etat : "pas cuit",
+        }
         this.contenu = newMelange
     }
 }
@@ -125,39 +143,97 @@ let bol = {
 
 // console.log(personnage.nom + " est actuellement à la " + personnage.lieu);
 
+personne.seDeplacer(maison);
+
 // Pour aller à l'épicerie acheter les ingrédients pour l'omelette, je répète la première étape en changeant le parametre de la method seDeplacer par l'epicerie
 
+personne.seDeplacer(epicerie);
+
 // Mon personnage prend un des paniers dans l'épicerie (il récupère le panier dans les objets de l'épicerie et le met dans sa main droite.)
+
+personne.mainDroite.push(epicerie.paniers);
+console.log(personne.mainDroite);
+
+console.log(personne);
 
 // Il doit y avoir un objet dans la main droite de personnage et un panier en moins. Vérifier avec des console.log() ensuite afficher un message du type : 
 
 // console.log(`${personnage.nom} a pris un ${type du panier}`);
 
+console.log(`${personne.nom} a pris un ${epicerie.paniers.type}`)
+
 // Je créer une boucle qui va prendre chaque élément (ingrédient) du contenu de l'épicerie (1 à 1) et en faire une COPIE dans le panier du personnage
 
+epicerie.ingredients.forEach(element => {
+    personne.mainDroite[0].contenu.push(element);
+    console.log(`${personne.nom} a pris ${element.nom}`);
+});
+
 // Afficher un message à chaque ingrédient pris
+
+console.log(personne);
 
 // Payer chaque ingrédient récupéré dans le panier. Avec une boucle aussi, on va les passer 1 à 1 dans la fonction payerArticle()
 
 // Afficher un message de ce qu'il reste d'argent sur le personnage.
 
+personne.mainDroite[0].contenu.forEach(element => {
+    personne.payerArticle(element)
+});
+
+console.log(`Il reste ${personne.argent} euros`);
+
 // rentrer à la maison (comme ça on pourra cuisiner)
 
+personne.seDeplacer(maison);
+
 // mettre chaque ingrédient dans le bol (1 à 1 donc avec une boucle)
+// Afficher un petit message de chaque ingrédient qu'on met dans le bol.
+
+personne.mainDroite[0].contenu.forEach(element => {
+    bol.contenu.push(element);
+    console.log(`Tu as rajouté ${element.nom} dans le bol`);
+});
+
 
 // Vérifier que les ingrédients ne se trouvent plus dans le panier (oups ! on a oublié de le rapporter x)
 
-// Afficher un petit message de chaque ingrédient qu'on met dans le bol.
+personne.mainDroite[0].contenu.splice(0)
+
+
+console.log("___MON PANIER___");
+console.log(personne.mainDroite[0].contenu);
+console.log("___MON BOL___");
+console.log(bol);
 
 // Retourner à l'épicerie pour rapporter le panier. (donc seDeplacer puis enlever le panier de la main droite et le remetre dans les paniers de l'épicerie.)
 
+personne.seDeplacer(epicerie);
+personne.mainDroite.splice(0);
+
+console.log(personne);
+
 // Afficher un petit message
+
+console.log(`La main droite contient ${personne.mainDroite.length} objets`);
 
 // Retourner à la maison pour continuer l'omelette
-
 // Afficher un petit message
 
+personne.seDeplacer(maison);
+
 // Vérifier chaque ingrédient dans le bol et le couper seulement s'il est entier ! Pour ça on utilise la méthode couper de personnage
+
+console.log("___MON BOL___");
+console.log(bol);
+
+personne.mainGauche.push(couteau);
+console.log("___MAIN GAUCHE___")
+console.log(personne.mainGauche);
+
+bol.contenu.forEach(element => {
+    personne.couper(element, couteau)
+})
 
 // Mélanger le contenu du bol avec la méthode melanger. on va nommer ce mélange une 'omelette' (à passer en param).
 
