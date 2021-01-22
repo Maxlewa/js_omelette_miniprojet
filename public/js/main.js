@@ -78,11 +78,43 @@ let ingredients = {
 // Créer un lieu "epicerie" qui a comme propriétés :
 // nom, personnes = [], paniers (un tableau d'objets "panier" avec une propriété "type" égal à panier et le contenu du panier, égal à un tableau vide),
 // Les "ingrédients" créés juste au dessus contenus dans un tableau.
-/**
- * Créer un poele avec un tableau comme contenu. Et avec une méthode cuir() qui, après 4 secondes, met l'état 'cuit' à this.contenu[0]. On peut faire ça avec la fonction setTimeout(()=> {}, 4000)
- */
+/* */
+
+let epicerie = {
+    nom : "epicerie",
+    personnes : [],
+    paniers : {
+        type : "panier",
+        contenu : [],
+    },
+    ingr : [oignon, oeuf, epice, fromage]
+}
+
+/* Créer un poele avec un tableau comme contenu. Et avec une méthode cuir() qui, après 4 secondes, met l'état 'cuit' à this.contenu[0]. On peut faire ça avec la fonction setTimeout(()=> {}, 4000)
+*/
+
+let poele = {
+    contenu : [],
+    cuir() {
+        setTimeout(()=> {
+            this.contenu[0] = "cuit"
+        }, 4000)
+    }
+}
+
 // Créer un bol avec un tableau comme contenu
 // ajouter une méthode melanger(nomMelange) qui va créer un nouvel objet "newMelange" avec comme nom la variable nomMelange passé en paramètre et avec 'pas cuit' en etat. cette méthode remplacera this.contenu par [l'obj newMelange]
+
+let bol = {
+    contenu : [],
+    melanger(nomMelange) {
+        newMelange = {
+            nom : nomMelange,
+            etat : "pas cuit"
+        },
+        this.contenu = newMelange
+    }
+}
 
 
 /**** DEBUT DE L'OMELETTE ****/
